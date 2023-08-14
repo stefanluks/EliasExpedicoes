@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_style %}
+    <style>
+        .flex-c{
+            padding: 5px 10px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column !important;
+            min-height: 150px;
+        }
+        .bg-secondary{
+            border-radius: 10px 10px 0px 0px;
+        }
+        .menu-item{
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .menu-item.selecionado{
+            font-weight: bold;
+        }
+        .caixa{
+            min-height: 300px;
+        }
+        .col{
+            transition: 1s !important;
+        }
+        .lista{
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            text-align: start;
+            justify-content: start;
+        }
+        .lista li{
+            width: 100%;
+            padding: 8px;
+            margin: 3px;
+            cursor: pointer;
+            transition: .7s;
+        }
+        .lista li:hover{
+            background-color: gray;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+{% endblock  %}
+{% block page %}
+    <div class="container text-center py-2">
+        <div class="container px-3 fs-3 d-flex my-2 align-items-start">Administração</div>
+        <div class="row py-3 text-light bg bg-secondary">
+            <div class="col-3">
+                <b>Elias Produções</b>
+            </div>
+            <div class="col">
+                <b>Conteudo</b>
+            </div>
+        </div>
+        <div class="row border border-1 caixa">
+            <div class="col-3 flex-c border border-1">
+                <div class="menu-item {% if selecionado == 'pct' %}selecionado{% endif %}" onclick="Tela('pct')">
+                    Pacotes
+                </div>
+                <div class="menu-item {% if selecionado == 'exp' %}selecionado{% endif %}" onclick="Tela('exp')">
+                    Experiências
+                </div>
+                <div class="menu-item {% if selecionado == 'atr' %}selecionado{% endif %}" onclick="Tela('atr')">
+                    Atrativos
+                </div>
+                <div class="menu-item {% if selecionado == 'atrd' %}selecionado{% endif %}" onclick="Tela('atrd')">
+                    Atrativos Dia
+                </div>
+                <div class="menu-item {% if selecionado == 'opc' %}selecionado{% endif %}" onclick="Tela('opc')">
+                    Opicionais
+                </div>
+            </div>
+            <div class="col flex-c border border-1">
+                {% if selecionado == 'pct' %}
+                    <ul class="lista">
+                        {% for p in pacotes %}
+                            <li class="item">{{p.nome}}</li>
+                        {% endfor %}
+                    </ul>
+                    <button onclick="ControlForm('pct')" class="btn btn-success w-100">Adicionar</button>   
+                {% elif selecionado == 'opc' %}
+                {% elif selecionado == 'atr' %}
+                {% elif selecionado == 'atrd' %}
+                {% elif selecionado == 'exp' %}
+                    <ul class="lista">
+                        {% for exp in experiencias %}
+                            <li class="item">{{exp.nome}}</li>
+                        {% endfor %}
+                    </ul>
+                    <button onclick="ControlForm('exp')" class="btn btn-success w-100">Adicionar</button>
+                    {% endif %}
+                </div>
+                <div id="form-exp" class="col" hidden>
+                    <form method="post" class="h-100 form-control d-flex flex-column align-items-start justify-content-center" action="{% url 'AddExp' %}">
+                        {% csrf_token %}
+                        <div class="w-100 d-flex justify-content-between">
+                            <h3>Nova Experiência</h3>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                        <input class="form-control my-1" type="text" id="nome" name="nome" placeholder="Digite o nome da experiência" />
+                        <label class="form-label fs-5 my-2 py-2" for="capa">
+                            <i class="bi bi-cloud-upload-fill border border-2 p-2 rounded"></i>
+                            <span class="fs-5">Carregar imagem de capa</span>
+                        </label>
+                        <input type="file" id="capa" name="capa" class="form-control" hidden/>      
+                        <select name="atrativos" class="form-select h-100" multiple>
+                            {% for op in atrativos %}
+                                <option class="form-option" id="{{op.id}}">{{op.nome}}</option>
+                            {% endfor %}
+                        </select>                  
+                    </form>
+                </div>
+                <div id="form-pct" class="col" hidden>
+                    <form method="post" class="h-100 form-control d-flex flex-column align-items-start justify-content-center" action="{% url 'AddExp' %}">
+                        {% csrf_token %}
+                        <div class="w-100 d-flex justify-content-between">
+                            <h3>Novo Pacote</h3>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                        <input class="form-control my-1" type="text" id="nome" name="nome" placeholder="Digite o nome da experiência" />
+                        <label class="form-label fs-5 my-2 py-2" for="capa">
+                            <i class="bi bi-cloud-upload-fill border border-2 p-2 rounded"></i>
+                            <span class="fs-5">Carregar imagem de capa</span>
+                        </label>
+                        <input type="file" id="capa" name="capa" class="form-control" hidden/>      
+                        <select name="atrativos" class="form-select h-100" multiple>
+                            {% for op in atrativos %}
+                                <option class="form-option" id="{{op.id}}">{{op.nome}}</option>
+                            {% endfor %}
+                        </select>                  
+                    </form>
+                </div>
+            </div>
+    </div>
+{% endblock  %}
+{% block page_script %}
+    <script>
+        function Tela(select){
+            console.log(select)
+            let url = window.location.href.split("/adm/")[0];
+            window.location.href = url+"/adm/?select="+select;
+        }
+
+        function ControlForm(form){
+            let div = document.getElementById("form-"+form);
+            div.hidden = false;
+        }
+    </script>
+{% endblock  %}

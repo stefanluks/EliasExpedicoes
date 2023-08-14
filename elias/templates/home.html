@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_style %}
+    <style>
+        section{
+            min-width: 100%;
+            min-height: 450px;
+            border: 1px solid black;
+            position: relative;
+        }
+        #Home{
+            border-color: red;
+        }
+        .img-capa{
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+        }
+        #experiencias{
+            background-color: gray;
+        }
+        #Contato{
+            background-color: green;
+        }
+        .logo{
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 45px;
+            text-shadow: 2px 2px 2px white, -2px 2px 2px white, -2px -2px 2px white, 2px -2px 2px white;
+        }
+        .card-exp{
+            transition: .4s;
+            cursor: pointer;
+            overflow: hidden;
+            height: 200px !important;
+            margin: 10px !important;
+        }
+        .card-exp:hover{
+            box-shadow: 0 0 10px black;
+        }
+        .card-img{
+            transition: .6s;
+        }
+        .card-exp:hover .card-img{
+            width: 150%;
+            height: 150%;
+        }
+        .card-img-overlay{
+            color: white;
+            text-shadow: 2px 2px 2px black, 2px -2px 2px black;
+        }
+    </style>
+{% endblock  %}
+{% block page %}
+    <section id="#Home">
+        <img class="img-capa" src="{% static 'imagens/capa2.jpg' %}" />
+        <div class="logo">
+            Elias Expedições
+        </div>
+    </section>
+    <section id="#experiencias">
+        <div class="container p-3 d-flex">
+            <div class="sobre">
+                <h2>As experiÊncias ...</h2>
+                <span style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+            </div>
+            <img src="{% static 'imagens/capa.jpg' %}" class="img-sobre" />
+        </div>
+        <div class="container">
+            <h3>Confira as Experiências</h3>
+        </div>
+        <div class="container d-flex w-100 py-3 my-2 align-items-center justify-content-center">
+            {% for exp in experiencias %}
+                <div class="card-exp card text-bg-dark" style="width: 400px;">
+                    <img src="{{exp.capa}}" class="card-img" alt="...">
+                    <div class="card-img-overlay d-flex flex-column align-items-start justify-content-end">
+                        <h5 class="card-title fs-2">{{exp.nome}}</h5>
+                        <p class="m-0 p-0">Vê agenda completa</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="#Contato"></section>
+{% endblock  %}
+{% block page_script %}{% endblock  %}
