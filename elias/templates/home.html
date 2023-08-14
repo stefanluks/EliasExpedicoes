@@ -5,19 +5,17 @@
         section{
             min-width: 100%;
             min-height: 450px;
-            border: 1px solid black;
+            height:  max-content;
             position: relative;
-        }
-        #Home{
-            border-color: red;
         }
         .img-capa{
             width: 100%;
             height: 450px;
             object-fit: cover;
         }
-        #experiencias{
-            background-color: gray;
+        .secao-exp{
+            background: rgb(0,0,0);
+            background: linear-gradient(0deg, rgba(102,0,5,1) 0%, rgba(130,1,1,1) 34%, rgba(255,197,115,1) 100%);
         }
         #Contato{
             background-color: green;
@@ -50,27 +48,77 @@
             color: white;
             text-shadow: 2px 2px 2px black, 2px -2px 2px black;
         }
+        .titulo-secao{
+            color: black;
+            text-shadow: 2px 2px 2px yellow, -2px 2px 2px yellow, 2px -2px 2px yellow, -2px -2px 2px yellow;
+        }
+        .secao-cntt{
+            width: 100%;
+            height: 350px;
+            background-color: black;
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: flex-end;
+        }
+        .img-rodape{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 0;
+        }
+        .secao-somos{
+            background: rgb(0,0,0);
+            background: linear-gradient(180deg, rgba(116,1,1,1) 0%, rgba(182,0,0,1) 44%, rgba(0,0,0,1) 100%);
+        }
+        .ag-rodape{
+            color: black;
+            z-index: 5;
+            padding: 10px 20px;
+            text-shadow: 2px 2px 2px white, -2px 2px 2px white, 2px -2px 2px white, -2px -2px 2px white;
+        }
+        .redes-sociais{
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 5px 20px;
+            font-size: 45px;
+            z-index: 6;
+        }
+        .rede-social{
+            margin: 0px 5px;
+        }
+        .rede-social .insta{
+            color: rgb(148,0,211) !important;
+        }
+        .icon-static{
+            width: 50px;
+            height: 50px;
+        }
     </style>
 {% endblock  %}
 {% block page %}
-    <section id="#Home">
+    <section id="Home">
         <img class="img-capa" src="{% static 'imagens/capa2.jpg' %}" />
         <div class="logo">
             Elias Expedições
         </div>
     </section>
-    <section id="#experiencias">
-        <div class="container p-3 d-flex">
+    <section id="Experiencias" class="secao-exp">
+        <div class="container p-3 d-flex py-5">
             <div class="sobre">
-                <h2>As experiÊncias ...</h2>
+                <h2 class="titulo-secao">As experiÊncias ...</h2>
                 <span style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
             </div>
             <img src="{% static 'imagens/capa.jpg' %}" class="img-sobre" />
         </div>
         <div class="container">
-            <h3>Confira as Experiências</h3>
+            <h3 class="titulo-secao">Confira as Experiências</h3>
         </div>
-        <div class="container d-flex w-100 py-3 my-2 align-items-center justify-content-center">
+        <div class="container d-flex w-100 py-3 align-items-center justify-content-center">
             {% for exp in experiencias %}
                 <div class="card-exp card text-bg-dark" style="width: 400px;">
                     <img src="{{exp.capa}}" class="card-img" alt="...">
@@ -82,6 +130,25 @@
             {% endfor %}
         </div>
     </section>
-    <section id="#Contato"></section>
+    <section id="somos" class="secao-somos">
+        <div class="container">
+
+        </div>
+    </section>
+    <section id="contato" class="secao-cntt">
+        <img class="img-rodape" src="{% static 'imagens/areia.png' %}" />
+        <div class="redes-sociais">
+            <a href="https://www.youtube.com/channel/UCLTP_h9Se0b_qZLW9hh3VfQ" class="rede-social">
+                <i class="text-danger bi bi-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/elias_expedicoes/" class="rede-social">
+                <i class="insta bi bi-instagram"></i>
+            </a>
+            <a href="https://www.tripadvisor.com.br/Profile/eliasexpedicoes?fid=9e3bdb74-6265-4730-90ae-0c60f05f6190" class="rede-social">
+                <img src="{% static 'icons/tripadvisor.png' %}" class="icon-static" />
+            </a>
+        </div>
+        <div class="ag-rodape">Todos os direitos reservados - Agência de Turismo Elias Expedições © - Jalapão Eco Turismo</div>
+    </section>
 {% endblock  %}
 {% block page_script %}{% endblock  %}
