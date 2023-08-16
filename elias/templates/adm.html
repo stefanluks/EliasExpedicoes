@@ -80,63 +80,56 @@
             </div>
             <div class="col flex-c border border-1">
                 {% if selecionado == 'pct' %}
-                    <ul class="lista">
-                        {% for p in pacotes %}
-                            <li class="item">{{p.nome}}</li>
-                        {% endfor %}
-                    </ul>
-                    <button onclick="ControlForm('pct')" class="btn btn-success w-100">Adicionar</button>   
-                {% elif selecionado == 'opc' %}
-                {% elif selecionado == 'atr' %}
-                {% elif selecionado == 'atrd' %}
-                {% elif selecionado == 'exp' %}
-                    <ul class="lista">
-                        {% for exp in experiencias %}
-                            <li class="item">{{exp.nome}}</li>
-                        {% endfor %}
-                    </ul>
-                    <button onclick="ControlForm('exp')" class="btn btn-success w-100">Adicionar</button>
+                    {% if pacotes %}
+                        <ul class="lista">
+                            {% for p in pacotes %}
+                                <li id="Pct/{{p.id}}" class="item">{{p.nome}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
                     {% endif %}
-                </div>
-                <div id="form-exp" class="col" hidden>
-                    <form method="post" class="h-100 form-control d-flex flex-column align-items-start justify-content-center" action="{% url 'AddExp' %}">
-                        {% csrf_token %}
-                        <div class="w-100 d-flex justify-content-between">
-                            <h3>Nova Experiência</h3>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                        <input class="form-control my-1" type="text" id="nome" name="nome" placeholder="Digite o nome da experiência" />
-                        <label class="form-label fs-5 my-2 py-2" for="capa">
-                            <i class="bi bi-cloud-upload-fill border border-2 p-2 rounded"></i>
-                            <span class="fs-5">Carregar imagem de capa</span>
-                        </label>
-                        <input type="file" id="capa" name="capa" class="form-control" hidden/>      
-                        <select name="atrativos" class="form-select h-100" multiple>
-                            {% for op in atrativos %}
-                                <option class="form-option" id="{{op.id}}">{{op.nome}}</option>
+                {% elif selecionado == 'opc' %}
+                    {% if opcicionais %}
+                        <ul class="lista">
+                            {% for op in opicionais %}
+                                <li id="Opc/{{op.id}}" class="item">{{op.nome}}</li>
                             {% endfor %}
-                        </select>                  
-                    </form>
-                </div>
-                <div id="form-pct" class="col" hidden>
-                    <form method="post" class="h-100 form-control d-flex flex-column align-items-start justify-content-center" action="{% url 'AddExp' %}">
-                        {% csrf_token %}
-                        <div class="w-100 d-flex justify-content-between">
-                            <h3>Novo Pacote</h3>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                        <input class="form-control my-1" type="text" id="nome" name="nome" placeholder="Digite o nome da experiência" />
-                        <label class="form-label fs-5 my-2 py-2" for="capa">
-                            <i class="bi bi-cloud-upload-fill border border-2 p-2 rounded"></i>
-                            <span class="fs-5">Carregar imagem de capa</span>
-                        </label>
-                        <input type="file" id="capa" name="capa" class="form-control" hidden/>      
-                        <select name="atrativos" class="form-select h-100" multiple>
-                            {% for op in atrativos %}
-                                <option class="form-option" id="{{op.id}}">{{op.nome}}</option>
+                        </ul>
+                    {% else %}
+                        <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
+                    {% endif %}
+                {% elif selecionado == 'atr' %}
+                    {% if atrativos%}
+                        <ul class="lista">
+                            {% for a in atrativos %}
+                                <li id="Atr/{{a.id}}" class="item">{{a.nome}}</li>
                             {% endfor %}
-                        </select>                  
-                    </form>
+                        </ul>
+                    {% else %}
+                        <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
+                    {% endif %}
+                {% elif selecionado == 'atrd' %}
+                    {% if atrativos_dias %}
+                        <ul class="lista">
+                            {% for ad in atrativos_dias %}
+                                <li id="Atrd/{{ad.id}}" class="item">{{ad.dia}}º dia - {{ad.getAtrativos}} </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
+                    {% endif %}
+                {% elif selecionado == 'exp' %}
+                    {% if experiencias %}
+                        <ul class="lista">
+                            {% for exp in experiencias %}
+                                <li id="Exp/{{exp.id}}" class="item">{{exp.nome}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
     </div>
@@ -152,6 +145,14 @@
         function ControlForm(form){
             let div = document.getElementById("form-"+form);
             div.hidden = false;
+        }
+
+        window.onload = () => {
+            document.querySelectorAll(".item").forEach(item => {
+                item.addEventListener("click", () => {
+                    window.location.href = "/Form"+item.id;
+                })
+            })
         }
     </script>
 {% endblock  %}

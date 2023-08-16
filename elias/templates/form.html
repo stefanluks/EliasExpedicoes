@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_style %}
+{% endblock  %}
+{% block page %}
+    <div class="py-3"></div>
+    <form class="container w-50 border border-2 p-3 rounded" action="." method="post">
+        <h3 class="fs-2 w-100 p-3 rounded text-dark bg bg-info d-flex justify-content-between">{{titulo}} <a href="{% url 'Administracao' %}" class="btn btn-danger">Voltar</a></h3>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-100 btn btn-primary">Salvar</button>
+    </form>
+{% endblock  %}
+{% block page_script %}
+    <script>
+        window.onload = () => {
+            document.querySelectorAll("p").forEach(p => { p.className = "mb-3"; })
+            document.querySelectorAll("label").forEach(label => { label.className = "form-label"; })
+            document.querySelectorAll("input").forEach(input => { input.className = "form-control"; })
+            document.querySelectorAll("select").forEach(select => { select.className = "form-control h-100"; })
+            document.querySelectorAll("textarea").forEach(textArea => { textArea.className = "form-control h-100"; textArea.style.resize = "none"})
+        }
+    </script>
+{% endblock  %}

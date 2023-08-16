@@ -35,14 +35,10 @@
             margin: 10px !important;
         }
         .card-exp:hover{
-            box-shadow: 0 0 10px black;
+            box-shadow: 0 0 15px black;
         }
         .card-img{
             transition: .6s;
-        }
-        .card-exp:hover .card-img{
-            width: 150%;
-            height: 150%;
         }
         .card-img-overlay{
             color: white;
@@ -89,6 +85,7 @@
             z-index: 6;
         }
         .rede-social{
+            position: relative;
             margin: 0px 5px;
         }
         .rede-social .insta{
@@ -97,6 +94,20 @@
         .icon-static{
             width: 50px;
             height: 50px;
+        }
+        .num-whats{
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 10px;
+            right: -2px;
+            background-color: red;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            border-radius: 50%;
         }
     </style>
 {% endblock  %}
@@ -109,11 +120,11 @@
     </section>
     <section id="Experiencias" class="secao-exp">
         <div class="container p-3 d-flex py-5 flex-wrap">
-            <div class="sobre">
+            <div id="sobre-desc" class="sobre w-50 mx-3">
                 <h2 class="titulo-secao">As experiÊncias ...</h2>
-                <span style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                <div style="text-align: justify;" class="text-dark fs-5 py-2 my-3 w-100 h-100">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
             </div>
-            <img src="{% static 'imagens/capa.jpg' %}" class="img-sobre img-fluid" />
+            <img src="{% static 'imagens/capa.jpg' %}" class="img-sobre img-fluid rounded" style="border-radius: 10px;" />
         </div>
         <div class="container">
             <h3 class="titulo-secao">Confira as Experiências</h3>
@@ -129,10 +140,35 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="container">
+            <h3 class="titulo-secao">Pacotes disponivéis</h3>
+        </div>
+        <div class="container d-flex w-100 py-3 align-items-center justify-content-center">
+            {% for pct in pacotes %}
+                <div class="card-exp card text-bg-dark" style="width: 400px;">
+                    <img src="{{pct.capa}}" class="card-img" alt="...">
+                    <div class="card-img-overlay d-flex flex-column align-items-start justify-content-end">
+                        <h5 class="card-title fs-2">{{pct.nome}}</h5>
+                        <p class="m-0 p-0">Vê agenda completa</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </section>
     <section id="somos" class="secao-somos">
         <div class="container">
-
+            <div class="container p-3 d-flex py-5 flex-wrap">
+                <img src="{% static 'imagens/capa2.jpg' %}" class="img-sobre mx-3 img-fluid rounded" style="border-radius: 10px; width: 45%;" />
+                <div id="sobre-desc" class="sobre w-50">
+                    <h2 class="text-light py-3 fs-2">Quem somos nós?</h2>
+                    <div style="text-align: justify; object-fit: cover;" class="text-light fs-5 py-2 my-2 w-100 h-100">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </section>
     <section id="contato" class="secao-cntt">
@@ -144,11 +180,41 @@
             <a href="https://www.instagram.com/elias_expedicoes/" class="rede-social">
                 <i class="insta bi bi-instagram"></i>
             </a>
+            <a href="mailto:eliasps.eee@gmail.com">
+                <i class="text-primary bi bi-envelope-at-fill"></i>
+            </a>
             <a href="https://www.tripadvisor.com.br/Profile/eliasexpedicoes?fid=9e3bdb74-6265-4730-90ae-0c60f05f6190" class="rede-social">
                 <img src="{% static 'icons/tripadvisor.png' %}" class="icon-static" />
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=5563984295428&text=Ol%C3%A1!%20Quero%20mais%20informa%C3%A7%C3%B5es%20sobre%20suas%20expedi%C3%A7%C3%B5es%20%20%3F" class="rede-social">
+                <i class="text-success bi bi-whatsapp"></i>
+                <i class="num-whats">1</i>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=5563984406813&text=Ol%C3%A1!%20Quero%20mais%20informa%C3%A7%C3%B5es%20sobre%20suas%20expedi%C3%A7%C3%B5es%20%20%3F" class="rede-social">
+                <i class="text-success bi bi-whatsapp"></i>
+                <i class="num-whats">2</i>
             </a>
         </div>
         <div class="ag-rodape">Todos os direitos reservados - Agência de Turismo Elias Expedições © - Jalapão Eco Turismo</div>
     </section>
 {% endblock  %}
-{% block page_script %}{% endblock  %}
+{% block page_script %}
+    <script>
+        window.onload = () => {
+            Ajustar();
+        }
+        window.addEventListener("resize", Ajustar)
+
+        Ajustar();
+
+        function Ajustar(){
+            console.log(window.innerWidth)
+            if(window.innerWidth < 500){
+                document.getElementById("sobre-desc").className = "sobre w-100 mx-3";
+            }else{
+                document.getElementById("sobre-desc").className = "sobre w-50 mx-3";
+            }
+        }
+    </script>
+
+{% endblock  %}

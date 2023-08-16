@@ -38,6 +38,11 @@ class AtrativoDia(models.Model):
     dia = models.IntegerField("Dia do Pacote", default=1)
     atrativos = models.ManyToManyField("Atrativo", blank=True)
 
+    def getAtrativos(self):
+        saida = ""
+        for a in list(self.atrativos.all()):
+            saida += a.nome + " - "
+        return saida[:-2]
 
 class Pacote(models.Model):
     nome = models.CharField("Nome do Pacote", max_length=150)
