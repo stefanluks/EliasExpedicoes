@@ -6,9 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Elias Expedições</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200&display=swap');
       .navbar-not-scroll{
         background: rgb(0,0,0);
         background: linear-gradient(180deg, rgba(195,94,0,1) 0%, rgba(224,150,44,1) 27%, rgba(242,195,76,1) 57%, rgba(254,255,96,1) 100%);
+      }
+      .navbar-brand{
+        font-family: 'Anton', sans-serif;
+      }
+      .navbar-collapse{
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-weight: bold;
       }
       .navbar-scroll{
         background-color: rgba(0,0,0,.7) !important;
@@ -28,44 +39,31 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="menu-principal">
-              <li class="nav-item">
-                <a class="nav-link active" href="/#Home">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/#Experiencias" aria-disabled="true">Experiências</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/#somos" aria-disabled="true">Quem somos nós?</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/#contato" aria-disabled="true">Contato</a>
-              </li>
-              {% comment %} {% if request.user.is_superuser %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="menu-principal">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'Administracao' %}" aria-disabled="true">Administração</a>
+                  <a class="nav-link active" href="/#Home">Home</a>
                 </li>
-              {% endif %} {% endcomment %}
-            </ul>
+                <li class="nav-item">
+                  <a class="nav-link" href="/#Experiencias" aria-disabled="true">Experiências</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/#somos" aria-disabled="true">Quem somos nós?</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/#contato" aria-disabled="true">Contato</a>
+                </li>
+                {% if request.user.is_authenticated %} 
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Administracao' %}" aria-disabled="true">Administração</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a href="{% url 'login' %}" id="login-html" class="nav-link fs-5"><i class="bi bi-box-arrow-in-right"></i></a>
+                  </li>
+                {% endif %}
+              </ul>
           </div>
         </div>
-        {% if request.user.is_authenticated %} 
-          <li id="login-html" class="dropdown" style="list-style: none;">
-            <a class="dropdown-toggle text-dark" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-              {{request.user.username}}
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="#">Perfil</a>
-              </li>
-              <li>
-                <a class="nav-link" href="{% url 'Administracao' %}" aria-disabled="true">Administração</a>
-              </li>
-            </ul>
-          </li>
-        {% else %}
-          <a href="" id="login-html" class="nav-link text-dark fs-3"><i class="bi bi-box-arrow-in-right"></i></a>
-        {% endif %}
     </nav>
     <div class="py-4 my-3"></div>
     {% block page %}{% endblock %}
@@ -75,18 +73,11 @@
       NavbarResize();
       window.addEventListener("resize", NavbarResize);
       function NavbarResize(){
-        if(window.innerWidth < 500){
-          document.getElementById("menu-principal").appendChild(document.getElementById("login-html"));
-        }else{
-          document.getElementById("navbar").appendChild(document.getElementById("login-html"));
-        }
       }
 
       window.addEventListener("scroll", () => {
         if(window.scrollY > 450){
           document.getElementById("navbar").className = "navbar-scroll navbar navbar-dark p-2 navbar-expand-lg fixed-top";
-          document.getElementById("login-html").classList.remove("text-dark");
-          document.getElementById("login-html").classList.add("text-light");
         }else{
           document.getElementById("navbar").className = "navbar-not-scroll navbar navbar-expand-lg p-4 fixed-top";
         }

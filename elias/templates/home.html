@@ -8,6 +8,10 @@
             height:  max-content;
             position: relative;
         }
+        .sobre{
+            width: 45%;
+            font-family: 'Bricolage Grotesque', sans-serif;
+        }
         .img-capa{
             width: 100%;
             height: 450px;
@@ -33,6 +37,7 @@
             overflow: hidden;
             height: 200px !important;
             margin: 10px !important;
+            font-family: 'Lobster', cursive;
         }
         .card-exp:hover{
             box-shadow: 0 0 15px black;
@@ -46,7 +51,7 @@
         }
         .titulo-secao{
             color: black;
-            text-shadow: 2px 2px 2px yellow, -2px 2px 2px yellow, 2px -2px 2px yellow, -2px -2px 2px yellow;
+            text-shadow: 2px 2px 2px white, -2px 2px 2px white, 2px -2px 2px white, -2px -2px 2px white;
         }
         .secao-cntt{
             width: 100%;
@@ -67,7 +72,7 @@
         }
         .secao-somos{
             background: rgb(0,0,0);
-            background: linear-gradient(180deg, rgba(116,1,1,1) 0%, rgba(182,0,0,1) 44%, rgba(0,0,0,1) 100%);
+            background: linear-gradient(180deg, rgba(102,0,5,1) 0%, rgba(182,0,0,1) 44%, rgba(0,0,0,1) 100%);
         }
         .ag-rodape{
             color: black;
@@ -109,24 +114,36 @@
             font-size: 10px;
             border-radius: 50%;
         }
+        .img-icon{
+            width: 130px;
+            margin: 20px 20px;
+        }
+        .img-sobre{
+            object-fit: cover;
+        }
+        .cx-sobre{
+            width: 100%;
+            background-color: rgba(0,0,0,.1);
+            border-radius: 0px 0px 20px 20px;
+        }
     </style>
 {% endblock  %}
 {% block page %}
     <section id="Home">
         <img class="img-capa" src="{% static 'imagens/capa2.jpg' %}" />
         <div class="logo">
-            Elias Expedições
+            <img src="{% static 'icons/icon.png' %}" class="img-fluid img-icon" />
         </div>
     </section>
     <section id="Experiencias" class="secao-exp">
-        <div class="container p-3 d-flex py-5 flex-wrap">
-            <div id="sobre-desc" class="sobre w-50 mx-3">
-                <h2 class="titulo-secao">As experiÊncias ...</h2>
-                <div style="text-align: justify;" class="text-dark fs-5 py-2 my-3 w-100 h-100">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        <div class="container w-100 p-3 cx-sobre">
+            <div id="sobre-desc" class=" w-100 mx-3 p-2">
+                <h2 class="titulo-secao">ExperiÊncias</h2>
+                <div style="text-align: justify;" class="text-dark fs-4 py-2 my-3">A Agência de Turismo Elias Expedições - Jalapão Eco Turismo oferece roteiros de viagem que exploram novos lugares e culturas, proporcionando aventuras e conhecimento sobre a região, incluindo relevo, clima, fauna e flora. A empresa se preocupa em fornecer serviços de excelência, vivências culturais e relações interpessoais inesquecíveis.</div>
             </div>
-            <img src="{% static 'imagens/capa.jpg' %}" class="img-sobre img-fluid rounded" style="border-radius: 10px;" />
+            <img src="{% static 'imagens/imagem2.jpeg' %}" class="img-sobre img-fluid rounded" style="border-radius: 10px;" />
         </div>
-        <div class="container">
+        <div class="container py-4">
             <h3 class="titulo-secao">Confira as Experiências</h3>
         </div>
         <div class="container d-flex w-100 py-3 align-items-center justify-content-center">
@@ -140,7 +157,7 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="container">
+        <div class="container py-4">
             <h3 class="titulo-secao">Pacotes disponivéis</h3>
         </div>
         <div class="container d-flex w-100 py-3 align-items-center justify-content-center">
@@ -157,10 +174,10 @@
     </section>
     <section id="somos" class="secao-somos">
         <div class="container">
-            <div class="container p-3 d-flex py-5 flex-wrap">
-                <img src="{% static 'imagens/capa2.jpg' %}" class="img-sobre mx-3 img-fluid rounded" style="border-radius: 10px; width: 45%;" />
-                <div id="sobre-desc" class="sobre w-50">
-                    <h2 class="text-light py-3 fs-2">Quem somos nós?</h2>
+            <div class="w-100 p-3 d-flex py-5 flex-wrap-reverse">
+                <img src="{% static 'imagens/capa2.jpg' %}" class="img-sobre w-50 img-fluid rounded" style="border-radius: 10px; width: 40%;" />
+                <div  class="sobre mx-3">
+                    <h2 class="text-light py-3 fs-2" style="font-weight: bold;">Quem somos nós?</h2>
                     <div style="text-align: justify; object-fit: cover;" class="text-light fs-5 py-2 my-2 w-100 h-100">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -200,7 +217,7 @@
 {% endblock  %}
 {% block page_script %}
     <script>
-        window.onload = () => {
+        {% comment %} window.onload = () => {
             Ajustar();
         }
         window.addEventListener("resize", Ajustar)
@@ -208,13 +225,13 @@
         Ajustar();
 
         function Ajustar(){
-            console.log(window.innerWidth)
+
             if(window.innerWidth < 500){
                 document.getElementById("sobre-desc").className = "sobre w-100 mx-3";
             }else{
                 document.getElementById("sobre-desc").className = "sobre w-50 mx-3";
             }
-        }
+        } {% endcomment %}
     </script>
 
 {% endblock  %}

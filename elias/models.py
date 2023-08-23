@@ -2,6 +2,7 @@ from django.db import models
 
 class Experiencia(models.Model):
     nome = models.CharField("Nome da Experiência", max_length=150)
+    descricao = models.TextField("Descrição da Experiência", max_length=1500, null=True, blank=True)
     atrativos = models.ManyToManyField("Atrativo", blank=True)
     capa = models.FileField("Imagem de Capa", upload_to="static/imagens/", null=True, blank=True)
     
@@ -43,6 +44,10 @@ class AtrativoDia(models.Model):
         for a in list(self.atrativos.all()):
             saida += a.nome + " - "
         return saida[:-2]
+    
+    def __str__(self):
+        return "Atrativos do "+str(self.dia)+"º dia"
+
 
 class Pacote(models.Model):
     nome = models.CharField("Nome do Pacote", max_length=150)

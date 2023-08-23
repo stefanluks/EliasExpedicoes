@@ -4,14 +4,11 @@
 {% endblock  %}
 {% block page %}
     <div class="py-3"></div>
-    <form class="container w-50 border border-2 p-3 rounded" action="{{url}}" method="post">
-        <h3 class="fs-2 w-100 p-3 rounded text-dark bg bg-info d-flex justify-content-between">
-            {% if edicao %}{{edicao.nome}}{% else %}{{titulo}}{% endif %}
-            <a href="{% url 'Administracao' %}" class="btn btn-danger">Voltar</a>
-        </h3>
+    <form class="container w-50 border border-2 p-3 rounded" action="." method="post">
+        <h3 class="fs-2 w-100 p-3 rounded text-dark bg bg-info d-flex justify-content-between">Login <a href="{% url 'Administracao' %}" class="btn btn-danger">Voltar</a></h3>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="w-100 btn btn-primary">Salvar</button>
+        <button type="submit" class="w-100 btn btn-primary">Entrar</button>
     </form>
 {% endblock  %}
 {% block page_script %}
@@ -22,11 +19,6 @@
             document.querySelectorAll("input").forEach(input => { input.className = "form-control"; })
             document.querySelectorAll("select").forEach(select => { select.className = "form-control h-100"; })
             document.querySelectorAll("textarea").forEach(textArea => { textArea.className = "form-control h-100"; textArea.style.resize = "none"})
-            document.querySelector("#id_capa").parentNode.childNodes.forEach((c,i) => {
-                if(i > 4 && i < 10){
-                    c.hidden = true;
-                }
-            })
         }
     </script>
 {% endblock  %}

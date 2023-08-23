@@ -16,6 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = ["https://02f2-45-177-172-6.ngrok-free.app/",""]
 
 # Application definition
 
@@ -101,6 +102,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL='Home'
+LOGOUT_REDIRECT_URL='login'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
