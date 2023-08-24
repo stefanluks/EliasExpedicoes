@@ -162,13 +162,13 @@
         </div>
         <div class="container d-flex w-100 py-3 align-items-center justify-content-center">
             {% for pct in pacotes %}
-                <div class="card-exp card text-bg-dark" style="width: 400px;">
+                <a class="card-exp card text-bg-dark" style="width: 400px;" href="{% url 'pacote' pct.id %}">
                     <img src="{{pct.capa}}" class="card-img" alt="...">
                     <div class="card-img-overlay d-flex flex-column align-items-start justify-content-end">
                         <h5 class="card-title fs-2">{{pct.nome}}</h5>
-                        <p class="m-0 p-0">Vê agenda completa</p>
+                        <p class="m-0 p-0">Vê informações do pacote</p>
                     </div>
-                </div>
+                </a>
             {% endfor %}
         </div>
     </section>

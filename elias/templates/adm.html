@@ -2,6 +2,11 @@
 {% load static %}
 {% block page_style %}
     <style>
+        body{
+            min-height: 100vh;
+            background: rgb(14,136,75);
+            background: linear-gradient(180deg, rgba(14,136,75,1) 0%, rgba(44,224,84,1) 27%, rgba(130,240,55,1) 57%, rgba(196,255,181,1) 100%);
+        }
         .flex-c{
             padding: 5px 10px;
             display: flex;
@@ -55,7 +60,8 @@
     </style>
 {% endblock  %}
 {% block page %}
-    <div class="container text-center py-2">
+    <div class="my-2 py-4"></div>
+    <div class="container text-center py-2 bg bg-light p-3 rounded my-2">
         <div class="container px-3 fs-3 d-flex my-2 align-items-center justify-content-start">
             Administração
             <div onclick="NovoItem('{{selecionado}}')" class="btn btn-primary mx-2 my-2">{{btnNovo}}</div>
@@ -71,19 +77,19 @@
         </div>
         <div class="row border border-1 caixa">
             <div class="col-3 flex-c border border-1">
-                <div class="menu-item {% if selecionado == 'pct' %}selecionado{% endif %}" onclick="Tela('pct')">
+                <div class="menu-item btn-model-select {% if selecionado == 'pct' %}selecionado{% endif %}" tela='pct'>
                     Pacotes
                 </div>
-                <div class="menu-item {% if selecionado == 'exp' %}selecionado{% endif %}" onclick="Tela('exp')">
+                <div class="menu-item btn-model-select {% if selecionado == 'exp' %}selecionado{% endif %}" tela='exp'>
                     Experiências
                 </div>
-                <div class="menu-item {% if selecionado == 'atr' %}selecionado{% endif %}" onclick="Tela('atr')">
+                <div class="menu-item btn-model-select {% if selecionado == 'atr' %}selecionado{% endif %}" tela='atr'>
                     Atrativos
                 </div>
-                <div class="menu-item {% if selecionado == 'atrd' %}selecionado{% endif %}" onclick="Tela('atrd')">
+                <div class="menu-item btn-model-select {% if selecionado == 'atrd' %}selecionado{% endif %}" tela='atrd'>
                     Atrativos Dia
                 </div>
-                <div class="menu-item {% if selecionado == 'opc' %}selecionado{% endif %}" onclick="Tela('opc')">
+                <div class="menu-item btn-model-select {% if selecionado == 'opc' %}selecionado{% endif %}" tela='opc'>
                     Opicionais
                 </div>
             </div>
@@ -155,10 +161,6 @@
 {% endblock  %}
 {% block page_script %}
     <script>
-        function Tela(select){
-            let url = window.location.href.split("/adm/")[0];
-            window.location.href = url+"/adm/?select="+select;
-        }
 
         function ControlForm(form){
             let div = document.getElementById("form-"+form);
@@ -171,11 +173,17 @@
                     window.location.href = "/Form"+item.id+"?edit=true";
                 });
             })
+            document.querySelectorAll(".btn-model-select").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    let url = window.location.href.split("/adm/")[0];
+                    window.location.href = url+"/adm/?select="+btn.getAttribute("tela");
+                })
+            })
         }
 
         function NovoItem(tipo){
             console.log(tipo);
-            window.location.href = "/Form"+tipo.charAt(0).toUpperCase()"";
+            window.location.href = "/Form"+tipo.charAt(0).toUpperCase()+"";
         }
     </script>
 {% endblock  %}

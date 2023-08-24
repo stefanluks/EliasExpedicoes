@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from .views import Home, Administracao, FormExp, FormAtr, FormAtrd, FormPct, FormOpc, ExcExp, ExcPct, ExcAtr, ExcAtrd, ExcOpc
+from .views import Home, Administracao, PctView, FormExp, FormAtr, FormAtrd, FormPct, FormOpc, ExcExp, ExcPct, ExcAtr, ExcAtrd, ExcOpc
 
 urlpatterns = [
     path('', Home, name="Home"),
     path('adm/', Administracao, name="Administracao"),
+    path('pacote/<int:id>', PctView, name="pacote"),
     path('FormExp/<int:id>', FormExp, name="FormExp"),
     path('FormPct/<int:id>', FormPct, name="FormPct"),
     path('FormAtr/<int:id>', FormAtr, name="FormAtr"),

@@ -159,3 +159,12 @@ def ExcOpc(request, id):
         return redirect("adm")
     else:
         return redirect("login")
+    
+    
+def PctView(request, id):
+    if request.user.is_authenticated:
+        return render(request, 'Pacote.html', {
+            'pacote': Pacote.objects.get(pk=id)
+        })
+    else:
+        return redirect("login")

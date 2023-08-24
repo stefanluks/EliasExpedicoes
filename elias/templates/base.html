@@ -56,6 +56,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'Administracao' %}" aria-disabled="true">Administração</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}" aria-disabled="true">Sair <i class="bi bi-box-arrow-left"></i></a>
+                  </li>
                 {% else %}
                   <li class="nav-item">
                     <a href="{% url 'login' %}" id="login-html" class="nav-link fs-5"><i class="bi bi-box-arrow-in-right"></i></a>
