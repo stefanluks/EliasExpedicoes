@@ -98,7 +98,7 @@
                     {% if pacotes %}
                         <ul class="lista">
                             {% for p in pacotes %}
-                                <li id="Pct/{{p.id}}" class="item">{{p.nome}}
+                                <li id="{{p.id}}" model="c" class="item">{{p.nome}}
                                     <a href="{% url 'ExcPct' p.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </li>
                             {% endfor %}
@@ -110,8 +110,10 @@
                     {% if opcicionais %}
                         <ul class="lista">
                             {% for op in opicionais %}
-                                <li id="Opc/{{op.id}}" class="item">{{op.nome}}
-                                    <a href="{% url 'ExcOpc' op.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                <li id="{{op.id}}" model="opcicionais" class="item">{{op.nome}}
+                                    <a href="{% url 'ExcOpc' op.id %}" class="btn btn-danger">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -122,8 +124,15 @@
                     {% if atrativos%}
                         <ul class="lista">
                             {% for a in atrativos %}
-                                <li id="Atr/{{a.id}}" class="item">{{a.nome}}
-                                    <a href="{% url 'ExcAtr' a.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                <li id="{{a.id}}" model="atrativos" class="item">{{a.nome}}
+                                    <div class="acoes">
+                                        <a href="{% url 'ExcAtr' a.id %}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="{% url 'ExcAtr' a.id %}" class="btn btn-danger">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -134,7 +143,7 @@
                     {% if atrativos_dias %}
                         <ul class="lista">
                             {% for ad in atrativos_dias %}
-                                <li id="Atrd/{{ad.id}}" class="item">{{ad.dia}}º dia - {{ad.getAtrativos}} 
+                                <li id="Atrd/{{ad.id}}" model="atrativos_dias" class="item">{{ad.dia}}º dia - {{ad.getAtrativos}} 
                                     <a href="{% url 'ExcAtrd' ad.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </li>
                             {% endfor %}
@@ -146,7 +155,7 @@
                     {% if experiencias %}
                         <ul class="lista">
                             {% for exp in experiencias %}
-                                <li id="Exp/{{exp.id}}" class="item">{{exp.nome}}
+                                <li id="{{exp.id}}" model="experiencias" class="item">{{exp.nome}}
                                     <a href="{% url 'ExcExp' exp.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </li>
                             {% endfor %}
@@ -154,9 +163,9 @@
                     {% else %}
                         <span class="alert alert-warning w-100">Nenhum Item encontrado!</span>
                     {% endif %}
-                    {% endif %}
-                </div>
+                {% endif %}
             </div>
+        </div>
     </div>
 {% endblock  %}
 {% block page_script %}
@@ -170,7 +179,7 @@
         window.onload = () => {
             document.querySelectorAll(".item").forEach(item => {
                 item.addEventListener("click", () => {
-                    window.location.href = "/Form"+item.id+"?edit=true";
+                    window.location.href = "/View/"+item.getAttribute("model")+"/"+item.id;
                 });
             })
             document.querySelectorAll(".btn-model-select").forEach(btn => {
@@ -182,8 +191,11 @@
         }
 
         function NovoItem(tipo){
-            console.log(tipo);
-            window.location.href = "/Form"+tipo.charAt(0).toUpperCase()+"";
+            tipo = tipo.split("");
+            tipo[0] = tipo[0].toUpperCase();
+            let url = "";
+            tipo.forEach(l => {url+=l});
+            window.location.href = "/Form"+url+"/";
         }
     </script>
 {% endblock  %}

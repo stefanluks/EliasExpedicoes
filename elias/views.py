@@ -35,15 +35,13 @@ def Administracao(request):
         return redirect('login')
 
 
-def FormExp(request, id):
+def FormExp(request):
     if request.user.is_superuser:
-        exp = Experiencia.objects.get(pk=id)
         if request.method == "GET":
-            exp = Experiencia.objects.get(pk=id)
-            form = FormExperiencia(request.POST or None, instance=exp) 
+            form = FormExperiencia()
             return render(request, 'form.html', {"titulo":"Experiência",'form':form})
         elif request.method == "POST":
-            form = FormExperiencia(request.POST or None, instance=exp) 
+            form = FormExperiencia(request.POST or None, instance=Experiencia()) 
             if form.is_valid():
                 form.save()
             return redirect("Administracao")
@@ -51,14 +49,13 @@ def FormExp(request, id):
         return redirect("login")
 
 
-def FormAtrd(request, id):
+def FormAtrd(request):
     if request.user.is_superuser:
-        atrd = AtrativoDia.objects.get(pk=id)
         if request.method == "GET":
-            form = FormAtrativoDia(request.POST or None, instance=atrd) 
+            form = FormAtrativoDia() 
             return render(request, 'form.html', {"titulo":"Atrativo Dia",'form':form})
         elif request.method == "POST":
-            form = FormAtrativoDia(request.POST or None, instance=atrd) 
+            form = FormAtrativoDia(request.POST or None, instance=AtrativoDia()) 
             if form.is_valid():
                 form.save()
             return redirect("Administracao")
@@ -66,14 +63,13 @@ def FormAtrd(request, id):
         return redirect("login")
    
     
-def FormAtr(request, id):
+def FormAtr(request):
     if request.user.is_superuser:
-        atv = Atrativo.objects.get(pk=id)
         if request.method == "GET":
-            form = FormAtrativo(request.POST or None, instance=atv)
+            form = FormAtrativo()
             return render(request, 'form.html', {"titulo":"Atrativo",'form':form})
         elif request.method == "POST":
-            form = FormAtrativo(request.POST or None, instance=atv)
+            form = FormAtrativo(request.POST or None, instance=Atrativo())
             if form.is_valid():
                 form.save()
             return redirect("Administracao")
@@ -81,14 +77,13 @@ def FormAtr(request, id):
         return redirect("login")
 
    
-def FormPct(request, id):
+def FormPct(request):
     if request.user.is_superuser:
-        pct = Pacote.objects.get(pk=id)
         if request.method == "GET":
-            form = FormPacote(request.POST or None, instance=pct)
+            form = FormPacote()
             return render(request, 'form.html', {"titulo":"Pacotes",'form':form})
         elif request.method == "POST":
-            form = FormPacote(request.POST or None, instance=pct)
+            form = FormPacote(request.POST or None, instance=Pacote())
             if form.is_valid():
                 form.save()
             return redirect("Administracao")
@@ -96,14 +91,13 @@ def FormPct(request, id):
         return redirect("login")
    
    
-def FormOpc(request, id):
+def FormOpc(request):
     if request.user.is_superuser:
-        opc = Opcionais.objects.get(pk=id)
         if request.method == "GET":
-            form = FormOpcionais(request.POST or None, instance=opc)
+            form = FormOpcionais()
             return render(request, 'form.html', {"titulo":"Opicionais",'form':form})
         elif request.method == "POST":
-            form = FormOpcionais(request.POST or None, instance=opc)
+            form = FormOpcionais(request.POST or None, instance=Opcionais())
             if form.is_valid():
                 form.save()
             return redirect("Administracao")
@@ -159,12 +153,23 @@ def ExcOpc(request, id):
         return redirect("adm")
     else:
         return redirect("login")
-    
-    
-def PctView(request, id):
+
+
+def GetFormModel(modelo):
+    if modelo == 'experiencias':
+        return FormExperiencia()
+    elif modelo == 'pacotes':
+        return FormPacote()
+    elif modelo == 'atrativos':
+        return FormAtrativo()
+    elif modelo == 'opicionais':
+        return FormOpcionais()
+    elif modelo == 'atrativos_dias':
+        return FormAtrativoDia()
+
+def View(request,model,id):
     if request.user.is_authenticated:
-        return render(request, 'Pacote.html', {
-            'pacote': Pacote.objects.get(pk=id)
-        })
+        form = GetFormModel(model)
+        return render(request, 'form.html', {"titulo":model,'form':form})
     else:
         return redirect("login")
