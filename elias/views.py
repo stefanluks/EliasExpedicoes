@@ -1,5 +1,8 @@
+import json
 from django.shortcuts import render, redirect
-from .models import Experiencia, Pacote, Atrativo, Opcionais, AtrativoDia
+from django.http import JsonResponse
+from .funcoes import CallAuto
+from .models import Experiencia, Pacote, Atrativo, Opcionais, AtrativoDia, Roteiro
 from .forms import FormExperiencia, FormPacote, FormAtrativo, FormOpcionais, FormAtrativoDia
 
 BTN_NOVO = {
@@ -11,28 +14,31 @@ BTN_NOVO = {
 }
 
 def Home(request):
+    CallAuto()
     return render(request, "home.html", {
         "experiencias":Experiencia.objects.all(),
         "pacotes": Pacote.objects.all(),
+        "roteiros":Roteiro.objects.filter(destaque=True)
     })
 
   
 def Administracao(request):
     if request.user.is_authenticated:
-        select = 'pct'
-        if "select" in request.GET:
-            select = request.GET['select']
-        return render(request, 'adm.html', {
-            "experiencias":Experiencia.objects.all(),
-            "atrativos": list(Atrativo.objects.all()),
-            'pacotes':list(Pacote.objects.all()),
-            "opcionais": list(Opcionais.objects.all()),
-            "atrativos_dias":list(AtrativoDia.objects.all()),
-            'selecionado':select,
-            "btnNovo":BTN_NOVO[select]
+        selecionado = None
+        editando = False
+        if 'edit' in request.GET:
+            editando = request.GET["edit"]
+        if "sel" in request.GET:
+            selecionado = Pacote.objects.get(pk=int(request.GET["sel"]))
+        return render(request, 'administracao.html', {
+            "pacotes":list(Pacote.objects.all()),
+            'selecionado':selecionado,
+            'editando':editando,
+            'experiencias':Experiencia.objects.all()
         })
     else:
         return redirect('login')
+
 
 
 def FormExp(request):
@@ -173,3 +179,98 @@ def View(request,model,id):
         return render(request, 'form.html', {"titulo":model,'form':form})
     else:
         return redirect("login")
+    
+
+
+def ObjectMake(objeto):
+    obj = {
+        "id":objeto.id,
+        "nome":objeto.nome,
+        "descricao":objeto.descricao,
+        "valor":objeto.valor,
+        "limite":objeto.limite,
+        "capa":"...",
+        "atrativo_dias":[],
+        "saida":objeto.saida,
+        "volta":objeto.volta,
+    }
+    if objeto.capa:
+        obj["capa"] = objeto.capa.url
+
+    for at in objeto.atrativo_dias.all():
+        obj["atrativo_dias"].append({
+            "dia":at.dia,
+            "atrativos":at.getAtrativos()
+        })
+    return obj
+
+
+def PctInExp(request, id):
+    pacotes = []
+    if Experiencia.objects.filter(pk=id):
+        experiencia = Experiencia.objects.get(pk=id)
+        for p in list(Pacote.objects.all()):
+            if experiencia in list(p.experiencias.all()):
+                pacotes.append(p)
+    saida = []
+    for pct in pacotes:
+        saida.append(ObjectMake(pct))
+    return JsonResponse(data = saida, safe= False)
+
+
+def RoteiroView(request, id):
+    pacote = None
+    if Pacote.objects.filter(pk=id):
+        pacote = Pacote.objects.get(pk=id)
+    return render(request, 'roteiro.html', {
+        "pacote":pacote,
+    })
+
+
+def AddListAtrativos(request):
+    if "lista" in request.GET:
+        lista = request.GET["lista"]
+        ant = None
+        for atrativo in lista.split("\n"):
+            if atrativo[0] != "#":
+                a = Atrativo()
+                a.nome = atrativo
+                a.save()
+                ant = a
+            else:
+                valor = atrativo.split("R$")[1].split(",00")[0]
+                op = Opcionais()
+                op.nome = atrativo
+                op.valor = float(valor)
+                op.save()
+                ant.opcionais.add(op)
+        return JsonResponse(data=True, safe=False)
+    return JsonResponse(data=False, safe=False)
+
+
+def GerarPacotes(request):
+    if 'json' in request.GET:
+        data = json.loads(request.GET["json"])
+        for item in data:
+            pct = Pacote()
+            pct.nome = item["nome"]
+            pct.descricao = item["descricao"]
+            pct.valor = int(item["valor"])
+            pct.limite = int(item["limite"])
+            pct.save()
+            filtro = ["nome","descricao","valor","limite","saida","volta","experiencias","capa","destacar"]
+            for i in item:
+                if i not in filtro:
+                    if item[i] != None:
+                        ad = AtrativoDia()
+                        ad.dia = int(i)
+                        ad.save()
+                        for atrativo in item[i]:
+                            a = Atrativo()
+                            a.nome = atrativo
+                            a.save()
+                            ad.atrativos.add(a)
+                        pct.atrativo_dias.add(ad)
+            
+        return JsonResponse(data=True, safe=False)
+    return JsonResponse(data=False, safe=False)

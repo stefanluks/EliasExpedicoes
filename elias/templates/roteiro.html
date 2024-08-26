@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_style %}
+
+    <style>
+        @font-face {
+            font-family: 'Babelgam';
+            src: url("{% static 'fonts/Babelgam.ttf' %}");
+        }
+        @font-face {
+            font-family: 'gaban';
+            src: url("{% static 'fonts/gaban.ttf' %}");
+        }
+
+        section{
+            background-color: rgb(101, 100, 100);
+            min-height: 100vh;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .titulo{
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tag-roteiro{
+            width: 50%;
+            font-family: 'Babelgam';
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tag{
+            color: white;
+            width: 50%;
+            font-size: 30px;
+            padding: 20px 10px;
+        }
+        
+        .capa-pacote{
+            width: 50%;
+            min-height: 250px;
+            object-fit: cover;
+            object-position: 150px;
+        }
+
+        #secao-pacote{
+            width: 100%;
+            min-height: 90vh;
+        }
+
+        .titulo-roteiro{
+            color: white;
+            font-size: 60px;
+            padding: 10px 0px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+
+        .titulo-roteiro .nome{
+            font-size: 60px !important;
+            font-family: 'gaban';
+            text-shadow: 0 0 10px rgb(213, 117, 14), 0 0 10px rgb(213, 117, 14), 0 0 10px rgb(213, 117, 14), 0 0 10px rgb(213, 117, 14);
+        }
+
+        .titulo-roteiro .descricao{
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            text-shadow: 0 0 10px black, 0 0 10px black, 0 0 10px black, 0 0 10px black;
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .titulo-roteiro .descricao .data{
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            text-shadow: 0 0 10px black, 0 0 10px black, 0 0 10px black, 0 0 10px black;
+        }
+
+        .info-limite-valor{
+            width: max-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .limite-pessoas{
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0 0 10px black, 0 0 10px black, 0 0 10px black, 0 0 10px black;
+        }
+        .atrativo-accordion{
+            cursor: pointer;
+            background-color: rgba(213, 117, 14, 0.764);
+            width: 100%;
+            height: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .atrativo-accordion-info{
+            width: 100%;
+            height: 0px;
+            background-color: rgba(0, 0, 0, 0.448);
+            padding: 0px 10px;
+            padding-bottom: 10px;
+            transition: 1s;
+        }
+        .inclusos-header{
+            margin-top: 25px;
+            height: 40px;
+            background-color: rgba(213, 117, 14, 0.764);
+            display: flex;
+            align-items: center;
+        }
+        .inclusos{
+            width: 100%;
+            height: max-content;
+            background-color: rgba(0, 0, 0, 0.448);
+            padding: 0px 10px;
+            padding-bottom: 10px;
+            transition: 1s;
+        }
+        .atrativo-accordion-info.ativo{
+            min-height: 50px;
+            height: max-content;
+        }
+        .lista-atrativos{
+            margin: 0px 30px;
+            padding: 2px 10px;
+        }
+        .bi.rotate{
+            transform: rotate(180deg);
+        }
+    </style>
+
+{% endblock  %}
+{% block page %}
+    <!-- <div class="py-2"></div> -->
+    {% if pacote.capa %}
+    <section id="secao-pacote" style="background-image: url({{pacote.capa.url}});">
+    {% else %}
+    <section id="secao-pacote bg bg-dark" style="background-image: url({% static 'imagens/capa2.jpg' %});">
+    {% endif %}
+        <div class="container">
+            <div class="titulo py-3 flex-wrap">
+                <div class="titulo-roteiro">
+                    <h3 class="nome">{{pacote.nome}}</h3>
+                    <p class="descricao">
+                        {{pacote.descricao}}
+                        {% if pacote.saida and pacote.volta %}<span class="data">Saida: {{pacote.saida}} <br> Volta: {{pacote.volta}}</span>{% endif %}
+                    </p>
+                </div>
+                <div class="info-limite-valor" id="info-limite-valor">
+                    <a class="btn btn-warning fs-5" href="https://forms.gle/v4aYrLWGtTiL2Ewn7">Adquerir R$ {{pacote.valor}}0</a>
+                    <div class="limite-pessoas">Minimo de {{pacote.limite}} turistas</div>
+                </div>
+            </div>
+            <ul class="atrativos-dias">
+                {% for a in atrativos %}
+                    <li clas="atrativo">{{a.nome}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% for ad in pacote.atrativo_dias.all %}
+            <div class="atrativo-accordion" id="ac-{{ad.id}}">
+                <div class="container d-flex align-items-center justify-content-between">
+                    <div class="atrativo-nome fs-5">
+                        {% if pacote.QtdAtrativos > 1 %}
+                            Atrativos do {{ad.dia}}º dia
+                        {% else %}
+                            Atrativos do dia
+                        {% endif %}
+                        </div>
+                    <i class="bi bi-chevron-double-down"></i>
+                </div>
+            </div>
+            {% if ad.AtrativosExiste %}
+                <div class="atrativo-accordion-info" id="aci-{{ad.id}}">
+                    <ul class="lista-atrativos container px-4 text-light">
+                        {% for a in ad.atrativos.all %}
+                            <li class="atrativo">{{a.nome}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="inclusos-header">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div class="atrativo-nome fs-5 text-light">Incluso em todos os pacotes</div>
+            </div>
+        </div>
+        <div class="inclusos" id="aci-{{ad.id}}">
+            <ul class="container px-4 text-light">
+                <li class="atrativo">Translado Palmas - Jalapão</li>
+                <li class="atrativo">Transporte em veículo 4x4</li>
+                <li class="atrativo">Lanche de bordo</li>
+                <li class="atrativo">Hospedagem no Jalapão todos os dias</li>
+                <li class="atrativo">Alimentação (café da manhã, almoço e jantar)</li>
+                <li class="atrativo">Entrada nos Atrativos</li>
+                <li class="atrativo">Seguro Viagem Individual</li>
+                <li class="atrativos">Guia/Condutor credenciado pelo Naturatins</li>
+            </ul>
+        </div>
+    </section>
+{% endblock  %}
+{% block page_script %}
+    <script>
+        window.onload = () => {
+            window.addEventListener("resize", Ajustar);
+
+            const accordions = document.querySelectorAll(".atrativo-accordion");
+            const dados = [];
+            accordions.forEach(ac => {
+                let id = ac.id.split("-")[1];
+                let obj = {
+                    acid: ac.id,
+                    achtml: ac,
+                    acihtml: document.getElementById("aci-"+id),
+                    aciconteudo: null,
+                }
+                let t = obj.acihtml.innerHTML;
+                obj.aciconteudo = t;
+                obj.acihtml.innerHTML = null;
+                dados.push(obj);
+                ac.addEventListener("click", () => {
+                    dados.forEach(obj => {
+                        if(obj.acid == ac.id){
+                            dados.forEach(i=>{
+                                i.acihtml.className = "atrativo-accordion-info";
+                                i.acihtml.innerHTML = null;
+                                i.achtml.querySelector("i").className = "bi bi-chevron-double-down"
+                            });
+                            obj.acihtml.classList.add("ativo");
+                            obj.acihtml.innerHTML = obj.aciconteudo;
+                            obj.achtml.querySelector("i").className = "bi bi-chevron-double-down rotate"
+                        }
+                    })
+                })
+            });
+            dados[0].achtml.click();
+
+
+            function Ajustar(){
+                if(window.innerWidth < 500){
+                    document.getElementById("info-limite-valor").className = "info-limite-valor flex-column-reverse";
+                }else{
+                    document.getElementById("info-limite-valor").className = "info-limite-valor";
+                }
+            }
+        }
+    </script>
+{% endblock  %}

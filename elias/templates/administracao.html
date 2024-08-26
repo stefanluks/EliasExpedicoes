@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_style %}
+    <style>
+        body{
+            min-height: 100vh;
+            background: rgb(14,136,75);
+            background: linear-gradient(180deg, rgba(14,136,75,1) 0%, rgba(44,224,84,1) 27%, rgba(130,240,55,1) 57%, rgba(196,255,181,1) 100%);
+        }
+        .flex-c{
+            padding: 5px 10px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column !important;
+            min-height: 150px;
+        }
+        .bg-secondary{
+            border-radius: 10px 10px 0px 0px;
+        }
+        .menu-item{
+            width: 100%;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 5px 0px;
+            padding: 10px 0px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+            text-decoration: none;
+            color: black;
+        }
+        .menu-item.selecionado{
+            font-weight: bold;
+        }
+        .caixa{
+            min-height: 300px;
+        }
+        .col{
+            transition: 1s !important;
+        }
+        .item{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .lista{
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            text-align: start;
+            justify-content: start;
+        }
+        .lista li{
+            width: 100%;
+            padding: 8px;
+            margin: 3px;
+            cursor: pointer;
+            transition: .7s;
+        }
+        .lista li:hover{
+            background-color: gray;
+            color: white;
+            font-weight: bold;
+        }
+        .label-roteiro{
+            width: 25%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+    </style>
+{% endblock  %}
+{% block page %}
+    <div class="my-2 py-4"></div>
+    <div class="container text-center py-2 bg bg-light p-3 rounded my-2">
+        <div class="container px-3 fs-3 d-flex my-2 align-items-center justify-content-between">
+            Administração
+            <div class="btns">
+                <div class="btn btn-primary mx-2 my-2">Novo Pacote</div>
+                <a href="{% url 'logout' %}" class="btn btn-danger my-2">Sair</a>
+            </div>
+        </div>
+        <div class="row py-3 text-light bg bg-secondary">
+            <div class="col-2">
+                <b>Pacotes</b>
+            </div>
+            <div class="col">
+                <b>Conteudo</b>
+            </div>
+        </div>
+        <div class="row border border-1 caixa">
+            <div class="col-3 flex-c border border-1">
+                {% for p in pacotes %}
+                    <a obj="{{p.id}}" class="menu-item btn-model-select {% if selecionado == p %} selecionado {% endif %}">
+                        {{p.nome}}
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="col flex-c border border-1">
+                {% if selecionado %}
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                        <h3 class="title">Roteiro Selecionado</h3>
+                        <div class="btns">
+                            <div class="btn btn-warning">Editar <i class="bi bi-pencil-square"></i></div>
+                            <div class="btn btn-primary">
+                                {% if selecionado.destacar %}
+                                    Roteiro em destaque
+                                    <i class="bi bi-check-square-fill"></i>
+                                {% else %}
+                                    Destacar na Página Inicial
+                                    <i class="bi bi-check-square"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <form class="form-controll w-100">
+                        <div class="w-100 my-2 d-flex">
+                            <label for="nome" class="label-roteiro form-label">Nome do Roteiro</label>
+                            <input type="text" id="nome" name="nome" class="form-control" value="{{selecionado.nome}}">
+                        </div>
+                        <div class="w-100 my-2 d-flex">
+                            <label for="descricao" class="label-roteiro form-label">Descrição do Roteiro</label>
+                            <input type="text" id="descricao" name="descricao" class="form-control" value="{{selecionado.descricao}}">
+                        </div>
+                        <div class="w-100 my-2 d-flex align-items-center justify-content-start">
+                            <div class="w-50">
+                                <label for="limite" class="w-100 label-roteiro form-label">Limite de Turistas</label>
+                                <input type="number" id="limite" name="limite" class="w-75 form-control" value="{{selecionado.limite}}">
+                            </div>
+                            <div class="w-50">
+                                <label for="valor" class="w-100 label-roteiro form-label">Valor por pessoa</label>
+                                <input type="number" id="valor" name="valor" class="w-75 form-control" value="{{selecionado.getValor}}">
+                            </div>
+                        </div>
+                        <div class="w-100 my-2 d-flex align-items-center justify-content-start">
+                            <div class="w-50">
+                                <label for="saida" class="w-100 label-roteiro form-label">Dia da Saida</label>
+                                <input type="date" id="saida" name="saida" class="w-75 form-control" value="{{selecionado.getSaida}}">
+                            </div>
+                            <div class="w-50">
+                                <label for="volta" class="w-100 label-roteiro form-label">Dia da volta</label>
+                                <input type="date" id="volta" name="volta" class="w-75 form-control" value="{{selecionado.getVolta}}">
+                            </div>
+                        </div>
+                        <div class="w-100 my-2 text-start">
+                            <label for="experiencia" class="form-label">Experiência</label>
+                            <select name="experiencia" class="form-select" id="experiencia" multiple>
+                                {% for exp in experiencias %}
+                                    {% if exp in selecionado.experiencias.all %}
+                                        <option value="{{exp.id}}" selected>{{exp.nome}}</option>
+                                    {% else %}
+                                        <option value="{{exp.id}}">{{exp.nome}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>   
+                        </div>
+                        <div class="w-100 my-2 text-start">
+                            <div class="atrativos-dias fs-4">Atrativos</div>
+                            {% for ad in selecionado.atrativo_dias.all %}
+                                <div class="atrativo_dia border my-3">
+                                    <div class="w-100 text-light px-2 bg bg-secondary py-3 d-flex align-items-center justify-content-between">{{ad.dia}}º dia<i class="px-2 bi bi-chevron-double-down"></i></div>
+                                    {% for a in ad.atrativos.all %}
+                                        <div class="atrativo d-flex align-items-center justify-content-between">
+                                            <div class="texto px-2">{{a.nome}}</div>
+                                            <div class="btns d-flex align-items-center my-2">
+                                                <div class="btn-edit btn btn-info mx-2 p-2"><i class="bi bi-pencil-square"></i></div>
+                                                <div class="btn-remove btn btn-danger"><i class="bi bi-x-circle-fill"></i></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="btn btn-info w-100 my-2">Adcionar Atrativo</div>
+                                </div>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="w-100 my-2 d-flex align-items-center justify-content-center border border-1 rounded">
+                            <label for="destacar" class="label-roteiro px-2 form-label" style="width: max-content;">Destacar na Página Inicial</label>
+                            <input class="form-check-input" type="checkbox" id="destacar">
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="w-100 alert alert-info">Nenhum item selecionado!</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+{% block page_script %}
+    <script>
+
+        function ControlForm(form){
+            let div = document.getElementById("form-"+form);
+            div.hidden = false;
+        }
+
+        window.onload = () => {
+            document.querySelectorAll(".item").forEach(item => {
+                item.addEventListener("click", () => {
+                    window.location.href = "/View/"+item.getAttribute("model")+"/"+item.id;
+                });
+            })
+            document.querySelectorAll(".btn-model-select").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    let url = window.location.href.split("/adm/")[0];   
+                    window.location.href = url+"/adm/?sel="+btn.getAttribute("obj");
+                })
+            })
+        }
+
+        function NovoItem(tipo){
+            tipo = tipo.split("");
+            tipo[0] = tipo[0].toUpperCase();
+            let url = "";
+            tipo.forEach(l => {url+=l});
+            window.location.href = "/Form"+url+"/";
+        }
+    </script>
+{% endblock  %}

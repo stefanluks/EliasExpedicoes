@@ -25,6 +25,9 @@
         background-color: rgba(0,0,0,.7) !important;
         color: white !important;
       }
+      .sombra{
+        text-shadow: 0 0 10px black,0 0 10px black,0 0 10px black,0 0 10px black;
+      }
     </style>
     {% block page_style %}{% endblock %}
     <link rel="icon" href="{% static 'icons/icon.png' %}">
@@ -34,7 +37,7 @@
 <body>
     <nav id="navbar" class="navbar navbar-not-scroll navbar-expand-lg p-4 fixed-top" style="transition: .6s;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'Home' %}">Elias Expedições</a>
+          <a class="navbar-brand text-light sombra" href="{% url 'Home' %}">Elias Expedições</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
